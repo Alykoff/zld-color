@@ -1,4 +1,4 @@
-package com.zolando.problem
+package com.zld.problem
 
 import org.scalatest._
 

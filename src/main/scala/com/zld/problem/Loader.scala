@@ -1,7 +1,8 @@
-package com.zolando.problem
+package com.zld.problem
 
-import com.zolando.problem.data.{SimpleClient, SimplePaint, TestCase}
-import com.zolando.problem.data._
+import com.zld.problem.data.{SimpleClient, SimplePaint, TestCase}
+import com.zld.problem.data._
+import com.zld.problem.data.Constants._
 
 import scala.annotation.tailrec
 import scala.io.Source
@@ -48,7 +49,7 @@ object Loader {
         .sliding(2, 2)
         .map(x => SimplePaint(
           x(0),
-          if (x(1) == 0) PAINT_TYPE_0 else PAINT_TYPE_1
+          if (x(1) == weightOfGlossy) PAINT_GLOSSY else PAINT_MATTE
         )).toSet
       val clientNum = currentClients.size + 1
       val newClient = SimpleClient(clientNum, paints)

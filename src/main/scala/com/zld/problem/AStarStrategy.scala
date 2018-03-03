@@ -1,15 +1,13 @@
-package com.zolando.problem
+package com.zld.problem
 
-import com.zolando.problem.data.{Paint, PaintType, PathPaint, SimpleClient, TestCase}
-import com.zolando.problem.data._
+import com.zld.problem.data.{Paint, PaintType, PathPaint, SimpleClient, TestCase}
+import com.zld.problem.data._
+import com.zld.problem.data.Constants._
 
 import scala.annotation.tailrec
 import scala.collection.mutable
 
 class AStarStrategy {
-  val firstPaintNum = 1
-  val weightOfGlossy = 0
-  val weightOfMatte = 1
 
   case class PaintBuilder(
    paintNum: Int,
@@ -89,14 +87,14 @@ class AStarStrategy {
   private def buildFirstPaths(paints: List[Paint], clients: Set[Int]): List[PathPaint] = {
     List(
       PathPaint(
-        paints.filter(x => x.paintNum == firstPaintNum && x.paintType == PAINT_TYPE_0).head,
+        paints.filter(x => x.paintNum == firstPaintNum && x.paintType == PAINT_GLOSSY).head,
         Set.empty,
         Set.empty,
         clients,
         weightOfGlossy
       ),
       PathPaint(
-        paints.filter(x => x.paintNum == firstPaintNum && x.paintType == PAINT_TYPE_1).head,
+        paints.filter(x => x.paintNum == firstPaintNum && x.paintType == PAINT_MATTE).head,
         Set.empty,
         Set.empty,
         clients,
@@ -116,8 +114,8 @@ class AStarStrategy {
     }
     val paintInBuildForm = for (paintNum <- firstPaintNum to numOfPaints) yield {
       List(
-        PaintBuilder(paintNum, PAINT_TYPE_0, getClientsWithPaint(paintNum, PAINT_TYPE_0)),
-        PaintBuilder(paintNum, PAINT_TYPE_1, getClientsWithPaint(paintNum, PAINT_TYPE_1))
+        PaintBuilder(paintNum, PAINT_GLOSSY, getClientsWithPaint(paintNum, PAINT_GLOSSY)),
+        PaintBuilder(paintNum, PAINT_MATTE, getClientsWithPaint(paintNum, PAINT_MATTE))
       )
     }
     val paints = paintInBuildForm.foldRight (List.empty[List[Paint]]) ((builders, acc) => {
@@ -146,6 +144,21 @@ class AStarStrategy {
     }).flatten
 
     paints
+  }
+
+  private def removeUnusedClients(clients: List[Client]): List[Client] = {
+    def isAnyDoubledPaintNum(client: Client): Boolean = {
+      val map = client
+        .favorites
+        .map(_.paintNum)
+        .groupBy(_)
+        .map(x => x._2.size)
+        .toList
+      !map
+        .exists(x => x > 1)
+    }
+
+    clients.filter(isAnyDoubledPaintNum)
   }
 }
 

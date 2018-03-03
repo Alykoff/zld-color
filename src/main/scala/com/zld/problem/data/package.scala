@@ -1,4 +1,4 @@
-package com.zolando.problem
+package com.zld.problem
 
 package object data {
   case class TestCase(var numOfTest: Int, var clients: List[SimpleClient], var numOfPaints: Int)
@@ -16,12 +16,12 @@ package object data {
     def compare(that: Paint): Int =
       if (this.paintNum < that.paintNum) 1
       else if (this.paintNum > that.paintNum) -1
-      else if (this.paintType == PAINT_TYPE_0 && that.paintType == PAINT_TYPE_1) 1
-      else if (this.paintType == PAINT_TYPE_1 && that.paintType == PAINT_TYPE_0) -1
+      else if (this.paintType == PAINT_GLOSSY && that.paintType == PAINT_MATTE) 1
+      else if (this.paintType == PAINT_MATTE && that.paintType == PAINT_GLOSSY) -1
       else 0
 
     override def toString(): String = {
-      return "P[" + paintNum + "; " + paintType + "];"
+      "P[" + paintNum + "; " + paintType + "];"
     }
   }
 
@@ -40,7 +40,7 @@ package object data {
   case class _P0() extends PaintType
   case class _P1() extends PaintType
   // TODO enum ???
-  implicit val PAINT_TYPE_0: _P0 = _P0()
-  implicit val PAINT_TYPE_1: _P1 = _P1()
+  implicit val PAINT_GLOSSY: _P0 = _P0()
+  implicit val PAINT_MATTE: _P1 = _P1()
 
 }
