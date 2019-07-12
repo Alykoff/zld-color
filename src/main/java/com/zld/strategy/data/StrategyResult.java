@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface StrategyResult {
     String getResult();
-    List<Paint> getPaints();
+//    List<Paint> getPaints();
 }

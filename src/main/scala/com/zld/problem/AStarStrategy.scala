@@ -10,9 +10,9 @@ import scala.collection.mutable
 class AStarStrategy {
 
   case class PaintBuilder(
-   paintNum: Int,
-   paintType: PaintType,
-   clients: Set[Int]
+    paintNum: Int,
+    paintType: PaintType,
+    clients: Set[Int]
   )
 
   def calc3(testCase: TestCase) = {
@@ -151,11 +151,10 @@ class AStarStrategy {
       val map = client
         .favorites
         .map(_.paintNum)
-        .groupBy(_)
+        .groupBy(x => x)
         .map(x => x._2.size)
         .toList
-      !map
-        .exists(x => x > 1)
+      !map.exists(x => x > 1)
     }
 
     clients.filter(isAnyDoubledPaintNum)
